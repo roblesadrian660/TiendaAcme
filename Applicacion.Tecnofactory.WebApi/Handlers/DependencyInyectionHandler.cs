@@ -20,12 +20,13 @@ namespace Applicacion.Tecnofactory.WebApi.Handlers
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             //Service
-            //services.AddScoped<IUserDomainService, UserDomainService>();
-            //services.AddScoped<IAuthDomainService, AuthDomainService>();
+            services.AddSingleton<TransformJSONtoXMLHelper>();
+            services.AddSingleton<TransformXMLtoJSONHelper>();
+
+            services.AddScoped<IOrderDomainService, OrderDomainService>();
 
             services.AddHttpClient<IMockyService, MockyService>();
             services.AddTransient<IMockyService, MockyService>();
-            services.AddSingleton<TransformJSONtoXMLHelper>();
             services.AddTransient<IOrderService, OrderService>();
 
             //AutoMapper

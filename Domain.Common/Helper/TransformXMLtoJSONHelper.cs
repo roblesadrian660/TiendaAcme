@@ -12,8 +12,7 @@ namespace Domain.Common.Helper
     public class TransformXMLtoJSONHelper
     {
         public TransformXMLtoJSONHelper() { }
-
-        public static SendOrderResponse ConvertSoapXmlToJson(string soapXml)
+        public SendOrderResponse ConvertSoapXmlToJson(string soapXml)
         {
             try
             {
