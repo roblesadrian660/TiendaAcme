@@ -18,8 +18,14 @@ namespace Applicacion.Acme.WebApi.Controllers
         [HttpPost("SubmitOrder")]
         public async Task<IActionResult> SubmitOrder(OrderRequest order)
         {
-            _orderService.CreateOrder(order);
-            return Ok("");
+            var result = await _orderService.CreateOrder(order);
+
+            var orderResponse = new OrderResponse
+            {
+                enviarPedidoRespuesta = result ?? new SendOrderResponse()
+            };
+
+            return Ok(orderResponse);
         }
     }
 }

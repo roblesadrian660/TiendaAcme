@@ -7,6 +7,7 @@ using AutoMapper;
 using Domain.Common.Dto;
 using Domain.Common.Helper;
 using Domain.Service.Service.Interface;
+using Microsoft.Extensions.Configuration;
 
 namespace Domain.Service.Service
 {
@@ -14,19 +15,22 @@ namespace Domain.Service.Service
     {
         private readonly IMapper _mapper;
         private readonly IMockyService _mockyService;
-        public OrderService(IMapper mapper, IMockyService mockyService = null)
+        private readonly string _baseUrl;
+
+        public OrderService(IMapper mapper, IMockyService mockyService , IConfiguration configuration)
         {
             _mapper = mapper;
             _mockyService = mockyService;
+            _baseUrl = configuration["MockeyApi:Url"];
         }
 
-        public async void CreateOrder(OrderRequest orderAcme)
+        public async Task<SendOrderResponse> CreateOrder(OrderRequest orderAcme)
         {
             OrderXml orderXml = _mapper.Map<OrderXml>(orderAcme.enviarPedido);
-            var xml =  TransformJSONtoXMLHelper.ConvertOrderXmlToSoapXml(orderXml);
-
-
-           var a = await _mockyService.MakeRequestSoap("https://run.mocky.io/v3/e169e9bc-16a7-4d76-b064-125efdab5b99", xml);
+            var xml = TransformJSONtoXMLHelper.ConvertOrderXmlToSoapXml(orderXml);
+            var respRequestSoap = await _mockyService.MakeRequestSoap(_baseUrl, xml);
+            SendOrderResponse sendOrderResponse = TransformXMLtoJSONHelper.ConvertSoapXmlToJson(respRequestSoap);
+            return sendOrderResponse;
         }
     }
 }

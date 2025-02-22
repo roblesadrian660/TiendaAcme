@@ -9,6 +9,6 @@ namespace Domain.Service.Service.Interface
 {
     public interface IOrderService
     {
-        void CreateOrder(OrderRequest orderAcme);
+        Task<SendOrderResponse> CreateOrder(OrderRequest orderAcme);
     }
 }
